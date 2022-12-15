@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="Хранилище ПрактикаПДДModelContainer" CdmEntityContainer="PDDEntities">
+    <EntitySetMapping Name="Автошколы">
+      <EntityTypeMapping TypeName="ПрактикаПДДModel.Автошколы">
+        <MappingFragment StoreEntitySet="Автошколы">
+          <ScalarProperty Name="idAuto" ColumnName="idAuto" />
+          <ScalarProperty Name="Название" ColumnName="Название" />
+          <ScalarProperty Name="ЦенаКатегорииА" ColumnName="ЦенаКатегорииА" />
+          <ScalarProperty Name="ЦенаКатегорииBМех" ColumnName="ЦенаКатегорииBМех" />
+          <ScalarProperty Name="ЦенаКатегорииBАвт" ColumnName="ЦенаКатегорииBАвт" />
+          <ScalarProperty Name="ЦенаКатегорииС" ColumnName="ЦенаКатегорииС" />
+          <ScalarProperty Name="ЦенаКатегорииD" ColumnName="ЦенаКатегорииD" />
+          <ScalarProperty Name="Рейтинг" ColumnName="Рейтинг" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Билеты">
+      <EntityTypeMapping TypeName="ПрактикаПДДModel.Билеты">
+        <MappingFragment StoreEntitySet="Билеты">
+          <ScalarProperty Name="idBilet" ColumnName="idBilet" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Варианты_ответов">
+      <EntityTypeMapping TypeName="ПрактикаПДДModel.Варианты_ответов">
+        <MappingFragment StoreEntitySet="Варианты_ответов">
+          <ScalarProperty Name="idVar" ColumnName="idVar" />
+          <ScalarProperty Name="idQue" ColumnName="idQue" />
+          <ScalarProperty Name="ВариантОтвета" ColumnName="ВариантОтвета" />
+          <ScalarProperty Name="ПравильностьВарианта" ColumnName="ПравильностьВарианта" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Вопрос">
+      <EntityTypeMapping TypeName="ПрактикаПДДModel.Вопрос">
+        <MappingFragment StoreEntitySet="Вопрос">
+          <ScalarProperty Name="idQue" ColumnName="idQue" />
+          <ScalarProperty Name="idBilet" ColumnName="idBilet" />
+          <ScalarProperty Name="Вопрос1" ColumnName="Вопрос" />
+          <ScalarProperty Name="Подсказка" ColumnName="Подсказка" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Обучающиеся">
+      <EntityTypeMapping TypeName="ПрактикаПДДModel.Обучающиеся">
+        <MappingFragment StoreEntitySet="Обучающиеся">
+          <ScalarProperty Name="idStudent" ColumnName="idStudent" />
+          <ScalarProperty Name="username" ColumnName="username" />
+          <ScalarProperty Name="passwords" ColumnName="passwords" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Попытки">
+      <EntityTypeMapping TypeName="ПрактикаПДДModel.Попытки">
+        <MappingFragment StoreEntitySet="Попытки">
+          <ScalarProperty Name="idTry" ColumnName="idTry" />
+          <ScalarProperty Name="idStudent" ColumnName="idStudent" />
+          <ScalarProperty Name="idBilet" ColumnName="idBilet" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Статистика">
+      <EntityTypeMapping TypeName="ПрактикаПДДModel.Статистика">
+        <MappingFragment StoreEntitySet="Статистика">
+          <ScalarProperty Name="idStat" ColumnName="idStat" />
+          <ScalarProperty Name="idStudent" ColumnName="idStudent" />
+          <ScalarProperty Name="КоличествоПройденныхБилетов" ColumnName="КоличествоПройденныхБилетов" />
+          <ScalarProperty Name="КоличествоНепройденныхБилетов" ColumnName="КоличествоНепройденныхБилетов" />
+          <ScalarProperty Name="КоличествоЗатраченногоВремемни" ColumnName="КоличествоЗатраченногоВремемни" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

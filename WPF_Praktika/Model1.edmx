@@ -1,0 +1,395 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Хранилище ПрактикаПДДModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Автошколы">
+          <Key>
+            <PropertyRef Name="idAuto" />
+          </Key>
+          <Property Name="idAuto" Type="tinyint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Название" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ЦенаКатегорииА" Type="int" />
+          <Property Name="ЦенаКатегорииBМех" Type="int" />
+          <Property Name="ЦенаКатегорииBАвт" Type="int" />
+          <Property Name="ЦенаКатегорииС" Type="int" />
+          <Property Name="ЦенаКатегорииD" Type="int" />
+          <Property Name="Рейтинг" Type="float" />
+        </EntityType>
+        <EntityType Name="Билеты">
+          <Key>
+            <PropertyRef Name="idBilet" />
+          </Key>
+          <Property Name="idBilet" Type="tinyint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Варианты_ответов">
+          <Key>
+            <PropertyRef Name="idVar" />
+          </Key>
+          <Property Name="idVar" Type="tinyint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="idQue" Type="tinyint" Nullable="false" />
+          <Property Name="ВариантОтвета" Type="nvarchar" MaxLength="1000" Nullable="false" />
+          <Property Name="ПравильностьВарианта" Type="tinyint" />
+        </EntityType>
+        <EntityType Name="Вопрос">
+          <Key>
+            <PropertyRef Name="idQue" />
+          </Key>
+          <Property Name="idQue" Type="tinyint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="idBilet" Type="tinyint" Nullable="false" />
+          <Property Name="Вопрос" Type="nvarchar" MaxLength="2550" Nullable="false" />
+          <Property Name="Подсказка" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Обучающиеся">
+          <Key>
+            <PropertyRef Name="idStudent" />
+          </Key>
+          <Property Name="idStudent" Type="tinyint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="username" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="passwords" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Попытки">
+          <Key>
+            <PropertyRef Name="idTry" />
+          </Key>
+          <Property Name="idTry" Type="tinyint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="idStudent" Type="tinyint" Nullable="false" />
+          <Property Name="idBilet" Type="tinyint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Статистика">
+          <Key>
+            <PropertyRef Name="idStat" />
+          </Key>
+          <Property Name="idStat" Type="tinyint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="idStudent" Type="tinyint" Nullable="false" />
+          <Property Name="КоличествоПройденныхБилетов" Type="int" />
+          <Property Name="КоличествоНепройденныхБилетов" Type="int" />
+          <Property Name="КоличествоЗатраченногоВремемни" Type="int" />
+        </EntityType>
+        <Association Name="FK_Вопрос_Билеты">
+          <End Role="Билеты" Type="Self.Билеты" Multiplicity="1" />
+          <End Role="Вопрос" Type="Self.Вопрос" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Билеты">
+              <PropertyRef Name="idBilet" />
+            </Principal>
+            <Dependent Role="Вопрос">
+              <PropertyRef Name="idBilet" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Попытки_Билеты">
+          <End Role="Билеты" Type="Self.Билеты" Multiplicity="1" />
+          <End Role="Попытки" Type="Self.Попытки" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Билеты">
+              <PropertyRef Name="idBilet" />
+            </Principal>
+            <Dependent Role="Попытки">
+              <PropertyRef Name="idBilet" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Попытки_Обучающиеся">
+          <End Role="Обучающиеся" Type="Self.Обучающиеся" Multiplicity="1" />
+          <End Role="Попытки" Type="Self.Попытки" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Обучающиеся">
+              <PropertyRef Name="idStudent" />
+            </Principal>
+            <Dependent Role="Попытки">
+              <PropertyRef Name="idStudent" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Статистика_Обучающиеся">
+          <End Role="Обучающиеся" Type="Self.Обучающиеся" Multiplicity="1" />
+          <End Role="Статистика" Type="Self.Статистика" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Обучающиеся">
+              <PropertyRef Name="idStudent" />
+            </Principal>
+            <Dependent Role="Статистика">
+              <PropertyRef Name="idStudent" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище ПрактикаПДДModelContainer">
+          <EntitySet Name="Автошколы" EntityType="Self.Автошколы" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Билеты" EntityType="Self.Билеты" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Варианты_ответов" EntityType="Self.Варианты_ответов" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Вопрос" EntityType="Self.Вопрос" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Обучающиеся" EntityType="Self.Обучающиеся" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Попытки" EntityType="Self.Попытки" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Статистика" EntityType="Self.Статистика" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Вопрос_Билеты" Association="Self.FK_Вопрос_Билеты">
+            <End Role="Билеты" EntitySet="Билеты" />
+            <End Role="Вопрос" EntitySet="Вопрос" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Попытки_Билеты" Association="Self.FK_Попытки_Билеты">
+            <End Role="Билеты" EntitySet="Билеты" />
+            <End Role="Попытки" EntitySet="Попытки" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Попытки_Обучающиеся" Association="Self.FK_Попытки_Обучающиеся">
+            <End Role="Обучающиеся" EntitySet="Обучающиеся" />
+            <End Role="Попытки" EntitySet="Попытки" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Статистика_Обучающиеся" Association="Self.FK_Статистика_Обучающиеся">
+            <End Role="Обучающиеся" EntitySet="Обучающиеся" />
+            <End Role="Статистика" EntitySet="Статистика" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ПрактикаПДДModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Автошколы">
+          <Key>
+            <PropertyRef Name="idAuto" />
+          </Key>
+          <Property Name="idAuto" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Название" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ЦенаКатегорииА" Type="Int32" />
+          <Property Name="ЦенаКатегорииBМех" Type="Int32" />
+          <Property Name="ЦенаКатегорииBАвт" Type="Int32" />
+          <Property Name="ЦенаКатегорииС" Type="Int32" />
+          <Property Name="ЦенаКатегорииD" Type="Int32" />
+          <Property Name="Рейтинг" Type="Double" />
+        </EntityType>
+        <EntityType Name="Билеты">
+          <Key>
+            <PropertyRef Name="idBilet" />
+          </Key>
+          <Property Name="idBilet" Type="Byte" Nullable="false" />
+          <NavigationProperty Name="Вопрос" Relationship="Self.FK_Вопрос_Билеты" FromRole="Билеты" ToRole="Вопрос" />
+          <NavigationProperty Name="Попытки" Relationship="Self.FK_Попытки_Билеты" FromRole="Билеты" ToRole="Попытки" />
+        </EntityType>
+        <EntityType Name="Варианты_ответов">
+          <Key>
+            <PropertyRef Name="idVar" />
+          </Key>
+          <Property Name="idVar" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="idQue" Type="Byte" Nullable="false" />
+          <Property Name="ВариантОтвета" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ПравильностьВарианта" Type="Byte" />
+        </EntityType>
+        <EntityType Name="Вопрос">
+          <Key>
+            <PropertyRef Name="idQue" />
+          </Key>
+          <Property Name="idQue" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="idBilet" Type="Byte" Nullable="false" />
+          <Property Name="Вопрос1" Type="String" MaxLength="2550" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Подсказка" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Билеты" Relationship="Self.FK_Вопрос_Билеты" FromRole="Вопрос" ToRole="Билеты" />
+        </EntityType>
+        <EntityType Name="Обучающиеся">
+          <Key>
+            <PropertyRef Name="idStudent" />
+          </Key>
+          <Property Name="idStudent" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="username" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="passwords" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Попытки" Relationship="Self.FK_Попытки_Обучающиеся" FromRole="Обучающиеся" ToRole="Попытки" />
+          <NavigationProperty Name="Статистика" Relationship="Self.FK_Статистика_Обучающиеся" FromRole="Обучающиеся" ToRole="Статистика" />
+        </EntityType>
+        <EntityType Name="Попытки">
+          <Key>
+            <PropertyRef Name="idTry" />
+          </Key>
+          <Property Name="idTry" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="idStudent" Type="Byte" Nullable="false" />
+          <Property Name="idBilet" Type="Byte" Nullable="false" />
+          <NavigationProperty Name="Билеты" Relationship="Self.FK_Попытки_Билеты" FromRole="Попытки" ToRole="Билеты" />
+          <NavigationProperty Name="Обучающиеся" Relationship="Self.FK_Попытки_Обучающиеся" FromRole="Попытки" ToRole="Обучающиеся" />
+        </EntityType>
+        <EntityType Name="Статистика">
+          <Key>
+            <PropertyRef Name="idStat" />
+          </Key>
+          <Property Name="idStat" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="idStudent" Type="Byte" Nullable="false" />
+          <Property Name="КоличествоПройденныхБилетов" Type="Int32" />
+          <Property Name="КоличествоНепройденныхБилетов" Type="Int32" />
+          <Property Name="КоличествоЗатраченногоВремемни" Type="Int32" />
+          <NavigationProperty Name="Обучающиеся" Relationship="Self.FK_Статистика_Обучающиеся" FromRole="Статистика" ToRole="Обучающиеся" />
+        </EntityType>
+        <Association Name="FK_Вопрос_Билеты">
+          <End Role="Билеты" Type="Self.Билеты" Multiplicity="1" />
+          <End Role="Вопрос" Type="Self.Вопрос" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Билеты">
+              <PropertyRef Name="idBilet" />
+            </Principal>
+            <Dependent Role="Вопрос">
+              <PropertyRef Name="idBilet" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Попытки_Билеты">
+          <End Role="Билеты" Type="Self.Билеты" Multiplicity="1" />
+          <End Role="Попытки" Type="Self.Попытки" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Билеты">
+              <PropertyRef Name="idBilet" />
+            </Principal>
+            <Dependent Role="Попытки">
+              <PropertyRef Name="idBilet" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Попытки_Обучающиеся">
+          <End Role="Обучающиеся" Type="Self.Обучающиеся" Multiplicity="1" />
+          <End Role="Попытки" Type="Self.Попытки" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Обучающиеся">
+              <PropertyRef Name="idStudent" />
+            </Principal>
+            <Dependent Role="Попытки">
+              <PropertyRef Name="idStudent" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Статистика_Обучающиеся">
+          <End Role="Обучающиеся" Type="Self.Обучающиеся" Multiplicity="1" />
+          <End Role="Статистика" Type="Self.Статистика" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Обучающиеся">
+              <PropertyRef Name="idStudent" />
+            </Principal>
+            <Dependent Role="Статистика">
+              <PropertyRef Name="idStudent" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="PDDEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Автошколы" EntityType="Self.Автошколы" />
+          <EntitySet Name="Билеты" EntityType="Self.Билеты" />
+          <EntitySet Name="Варианты_ответов" EntityType="Self.Варианты_ответов" />
+          <EntitySet Name="Вопрос" EntityType="Self.Вопрос" />
+          <EntitySet Name="Обучающиеся" EntityType="Self.Обучающиеся" />
+          <EntitySet Name="Попытки" EntityType="Self.Попытки" />
+          <EntitySet Name="Статистика" EntityType="Self.Статистика" />
+          <AssociationSet Name="FK_Вопрос_Билеты" Association="Self.FK_Вопрос_Билеты">
+            <End Role="Билеты" EntitySet="Билеты" />
+            <End Role="Вопрос" EntitySet="Вопрос" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Попытки_Билеты" Association="Self.FK_Попытки_Билеты">
+            <End Role="Билеты" EntitySet="Билеты" />
+            <End Role="Попытки" EntitySet="Попытки" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Попытки_Обучающиеся" Association="Self.FK_Попытки_Обучающиеся">
+            <End Role="Обучающиеся" EntitySet="Обучающиеся" />
+            <End Role="Попытки" EntitySet="Попытки" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Статистика_Обучающиеся" Association="Self.FK_Статистика_Обучающиеся">
+            <End Role="Обучающиеся" EntitySet="Обучающиеся" />
+            <End Role="Статистика" EntitySet="Статистика" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище ПрактикаПДДModelContainer" CdmEntityContainer="PDDEntities">
+          <EntitySetMapping Name="Автошколы">
+            <EntityTypeMapping TypeName="ПрактикаПДДModel.Автошколы">
+              <MappingFragment StoreEntitySet="Автошколы">
+                <ScalarProperty Name="idAuto" ColumnName="idAuto" />
+                <ScalarProperty Name="Название" ColumnName="Название" />
+                <ScalarProperty Name="ЦенаКатегорииА" ColumnName="ЦенаКатегорииА" />
+                <ScalarProperty Name="ЦенаКатегорииBМех" ColumnName="ЦенаКатегорииBМех" />
+                <ScalarProperty Name="ЦенаКатегорииBАвт" ColumnName="ЦенаКатегорииBАвт" />
+                <ScalarProperty Name="ЦенаКатегорииС" ColumnName="ЦенаКатегорииС" />
+                <ScalarProperty Name="ЦенаКатегорииD" ColumnName="ЦенаКатегорииD" />
+                <ScalarProperty Name="Рейтинг" ColumnName="Рейтинг" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Билеты">
+            <EntityTypeMapping TypeName="ПрактикаПДДModel.Билеты">
+              <MappingFragment StoreEntitySet="Билеты">
+                <ScalarProperty Name="idBilet" ColumnName="idBilet" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Варианты_ответов">
+            <EntityTypeMapping TypeName="ПрактикаПДДModel.Варианты_ответов">
+              <MappingFragment StoreEntitySet="Варианты_ответов">
+                <ScalarProperty Name="idVar" ColumnName="idVar" />
+                <ScalarProperty Name="idQue" ColumnName="idQue" />
+                <ScalarProperty Name="ВариантОтвета" ColumnName="ВариантОтвета" />
+                <ScalarProperty Name="ПравильностьВарианта" ColumnName="ПравильностьВарианта" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Вопрос">
+            <EntityTypeMapping TypeName="ПрактикаПДДModel.Вопрос">
+              <MappingFragment StoreEntitySet="Вопрос">
+                <ScalarProperty Name="idQue" ColumnName="idQue" />
+                <ScalarProperty Name="idBilet" ColumnName="idBilet" />
+                <ScalarProperty Name="Вопрос1" ColumnName="Вопрос" />
+                <ScalarProperty Name="Подсказка" ColumnName="Подсказка" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Обучающиеся">
+            <EntityTypeMapping TypeName="ПрактикаПДДModel.Обучающиеся">
+              <MappingFragment StoreEntitySet="Обучающиеся">
+                <ScalarProperty Name="idStudent" ColumnName="idStudent" />
+                <ScalarProperty Name="username" ColumnName="username" />
+                <ScalarProperty Name="passwords" ColumnName="passwords" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Попытки">
+            <EntityTypeMapping TypeName="ПрактикаПДДModel.Попытки">
+              <MappingFragment StoreEntitySet="Попытки">
+                <ScalarProperty Name="idTry" ColumnName="idTry" />
+                <ScalarProperty Name="idStudent" ColumnName="idStudent" />
+                <ScalarProperty Name="idBilet" ColumnName="idBilet" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Статистика">
+            <EntityTypeMapping TypeName="ПрактикаПДДModel.Статистика">
+              <MappingFragment StoreEntitySet="Статистика">
+                <ScalarProperty Name="idStat" ColumnName="idStat" />
+                <ScalarProperty Name="idStudent" ColumnName="idStudent" />
+                <ScalarProperty Name="КоличествоПройденныхБилетов" ColumnName="КоличествоПройденныхБилетов" />
+                <ScalarProperty Name="КоличествоНепройденныхБилетов" ColumnName="КоличествоНепройденныхБилетов" />
+                <ScalarProperty Name="КоличествоЗатраченногоВремемни" ColumnName="КоличествоЗатраченногоВремемни" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

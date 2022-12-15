@@ -1,0 +1,148 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="ПрактикаПДДModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Автошколы">
+    <Key>
+      <PropertyRef Name="idAuto" />
+    </Key>
+    <Property Name="idAuto" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Название" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="ЦенаКатегорииА" Type="Int32" />
+    <Property Name="ЦенаКатегорииBМех" Type="Int32" />
+    <Property Name="ЦенаКатегорииBАвт" Type="Int32" />
+    <Property Name="ЦенаКатегорииС" Type="Int32" />
+    <Property Name="ЦенаКатегорииD" Type="Int32" />
+    <Property Name="Рейтинг" Type="Double" />
+  </EntityType>
+  <EntityType Name="Билеты">
+    <Key>
+      <PropertyRef Name="idBilet" />
+    </Key>
+    <Property Name="idBilet" Type="Byte" Nullable="false" />
+    <NavigationProperty Name="Вопрос" Relationship="Self.FK_Вопрос_Билеты" FromRole="Билеты" ToRole="Вопрос" />
+    <NavigationProperty Name="Попытки" Relationship="Self.FK_Попытки_Билеты" FromRole="Билеты" ToRole="Попытки" />
+  </EntityType>
+  <EntityType Name="Варианты_ответов">
+    <Key>
+      <PropertyRef Name="idVar" />
+    </Key>
+    <Property Name="idVar" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="idQue" Type="Byte" Nullable="false" />
+    <Property Name="ВариантОтвета" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="ПравильностьВарианта" Type="Byte" />
+  </EntityType>
+  <EntityType Name="Вопрос">
+    <Key>
+      <PropertyRef Name="idQue" />
+    </Key>
+    <Property Name="idQue" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="idBilet" Type="Byte" Nullable="false" />
+    <Property Name="Вопрос1" Type="String" MaxLength="2550" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Подсказка" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Билеты" Relationship="Self.FK_Вопрос_Билеты" FromRole="Вопрос" ToRole="Билеты" />
+  </EntityType>
+  <EntityType Name="Обучающиеся">
+    <Key>
+      <PropertyRef Name="idStudent" />
+    </Key>
+    <Property Name="idStudent" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="username" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="passwords" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Попытки" Relationship="Self.FK_Попытки_Обучающиеся" FromRole="Обучающиеся" ToRole="Попытки" />
+    <NavigationProperty Name="Статистика" Relationship="Self.FK_Статистика_Обучающиеся" FromRole="Обучающиеся" ToRole="Статистика" />
+  </EntityType>
+  <EntityType Name="Попытки">
+    <Key>
+      <PropertyRef Name="idTry" />
+    </Key>
+    <Property Name="idTry" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="idStudent" Type="Byte" Nullable="false" />
+    <Property Name="idBilet" Type="Byte" Nullable="false" />
+    <NavigationProperty Name="Билеты" Relationship="Self.FK_Попытки_Билеты" FromRole="Попытки" ToRole="Билеты" />
+    <NavigationProperty Name="Обучающиеся" Relationship="Self.FK_Попытки_Обучающиеся" FromRole="Попытки" ToRole="Обучающиеся" />
+  </EntityType>
+  <EntityType Name="Статистика">
+    <Key>
+      <PropertyRef Name="idStat" />
+    </Key>
+    <Property Name="idStat" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="idStudent" Type="Byte" Nullable="false" />
+    <Property Name="КоличествоПройденныхБилетов" Type="Int32" />
+    <Property Name="КоличествоНепройденныхБилетов" Type="Int32" />
+    <Property Name="КоличествоЗатраченногоВремемни" Type="Int32" />
+    <NavigationProperty Name="Обучающиеся" Relationship="Self.FK_Статистика_Обучающиеся" FromRole="Статистика" ToRole="Обучающиеся" />
+  </EntityType>
+  <Association Name="FK_Вопрос_Билеты">
+    <End Role="Билеты" Type="Self.Билеты" Multiplicity="1" />
+    <End Role="Вопрос" Type="Self.Вопрос" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Билеты">
+        <PropertyRef Name="idBilet" />
+      </Principal>
+      <Dependent Role="Вопрос">
+        <PropertyRef Name="idBilet" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Попытки_Билеты">
+    <End Role="Билеты" Type="Self.Билеты" Multiplicity="1" />
+    <End Role="Попытки" Type="Self.Попытки" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Билеты">
+        <PropertyRef Name="idBilet" />
+      </Principal>
+      <Dependent Role="Попытки">
+        <PropertyRef Name="idBilet" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Попытки_Обучающиеся">
+    <End Role="Обучающиеся" Type="Self.Обучающиеся" Multiplicity="1" />
+    <End Role="Попытки" Type="Self.Попытки" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Обучающиеся">
+        <PropertyRef Name="idStudent" />
+      </Principal>
+      <Dependent Role="Попытки">
+        <PropertyRef Name="idStudent" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Статистика_Обучающиеся">
+    <End Role="Обучающиеся" Type="Self.Обучающиеся" Multiplicity="1" />
+    <End Role="Статистика" Type="Self.Статистика" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Обучающиеся">
+        <PropertyRef Name="idStudent" />
+      </Principal>
+      <Dependent Role="Статистика">
+        <PropertyRef Name="idStudent" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="PDDEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Автошколы" EntityType="Self.Автошколы" />
+    <EntitySet Name="Билеты" EntityType="Self.Билеты" />
+    <EntitySet Name="Варианты_ответов" EntityType="Self.Варианты_ответов" />
+    <EntitySet Name="Вопрос" EntityType="Self.Вопрос" />
+    <EntitySet Name="Обучающиеся" EntityType="Self.Обучающиеся" />
+    <EntitySet Name="Попытки" EntityType="Self.Попытки" />
+    <EntitySet Name="Статистика" EntityType="Self.Статистика" />
+    <AssociationSet Name="FK_Вопрос_Билеты" Association="Self.FK_Вопрос_Билеты">
+      <End Role="Билеты" EntitySet="Билеты" />
+      <End Role="Вопрос" EntitySet="Вопрос" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Попытки_Билеты" Association="Self.FK_Попытки_Билеты">
+      <End Role="Билеты" EntitySet="Билеты" />
+      <End Role="Попытки" EntitySet="Попытки" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Попытки_Обучающиеся" Association="Self.FK_Попытки_Обучающиеся">
+      <End Role="Обучающиеся" EntitySet="Обучающиеся" />
+      <End Role="Попытки" EntitySet="Попытки" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Статистика_Обучающиеся" Association="Self.FK_Статистика_Обучающиеся">
+      <End Role="Обучающиеся" EntitySet="Обучающиеся" />
+      <End Role="Статистика" EntitySet="Статистика" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
